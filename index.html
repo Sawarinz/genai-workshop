@@ -1,0 +1,1604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gen AI Power Tools for Researchers — Workshop Materials</title>
+<style>
+  :root {
+    --cream:      #FFF8F3;
+    --lavender:   #F3EEF7;
+    --mint:       #EAF6F0;
+    --peach:      #FDEDE3;
+    --sky:        #E7F1F8;
+    --rose:       #FBE7EC;
+    --primary:    #8C7AAE;
+    --secondary:  #EBA39C;
+    --tertiary:   #9CBEB4;
+    --accent:     #F0C987;
+    --dark:       #3D3A4B;
+    --body:       #5C5870;
+    --muted:      #9A95A8;
+    --border:     #EBE4F1;
+    --navy:       #2E2A3D;
+    --code-bg:    #2D2B3F;
+    --code-text:  #E8E4F0;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Georgia', 'Iowan Old Style', serif;
+    background: var(--cream);
+    color: var(--body);
+    line-height: 1.65;
+    min-height: 100vh;
+  }
+  /* Thai mode overrides */
+  body.lang-th {
+    font-family: 'Sarabun', 'Noto Sans Thai', 'Trebuchet MS', sans-serif;
+    line-height: 1.75;
+  }
+  body.lang-th h1,
+  body.lang-th h2,
+  body.lang-th h3,
+  body.lang-th .brand {
+    font-family: 'IBM Plex Sans Thai', 'Sarabun', 'Noto Sans Thai', 'Georgia', serif;
+  }
+  body.lang-th p { line-height: 1.85; }
+
+  /* ====== Layout ====== */
+  .layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    min-height: 100vh;
+  }
+
+  /* ====== Sidebar ====== */
+  aside {
+    background: var(--lavender);
+    border-right: 1px solid var(--border);
+    padding: 2.5rem 1.75rem;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+  }
+
+  .brand {
+    font-family: 'Georgia', serif;
+    font-size: 1.35rem;
+    font-weight: bold;
+    color: var(--dark);
+    line-height: 1.3;
+    margin-bottom: 0.25rem;
+  }
+  .brand-sub {
+    font-family: 'Calibri', 'Trebuchet MS', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--secondary);
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+  }
+  body.lang-th .brand-sub {
+    font-family: 'Sarabun', sans-serif;
+    text-transform: none;
+    letter-spacing: 0.08em;
+  }
+
+  /* ====== Language toggle ====== */
+  .lang-toggle {
+    display: flex;
+    gap: 0;
+    margin-bottom: 1.75rem;
+    background: rgba(140, 122, 174, 0.1);
+    border-radius: 999px;
+    padding: 3px;
+    width: fit-content;
+  }
+  .lang-toggle button {
+    background: transparent;
+    border: none;
+    padding: 0.3rem 0.95rem;
+    border-radius: 999px;
+    font-family: 'Calibri', 'Sarabun', sans-serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    font-weight: 700;
+    color: var(--muted);
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+  }
+  .lang-toggle button.active {
+    background: var(--primary);
+    color: white;
+  }
+  .lang-toggle button:hover:not(.active) {
+    color: var(--dark);
+  }
+
+  nav { margin-top: 0.5rem; }
+  nav .nav-section {
+    font-family: 'Calibri', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: var(--primary);
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    padding-left: 0.5rem;
+  }
+  body.lang-th nav .nav-section {
+    font-family: 'Sarabun', sans-serif;
+    text-transform: none;
+    letter-spacing: 0.06em;
+    font-size: 0.8rem;
+  }
+  nav a {
+    display: block;
+    padding: 0.4rem 0.75rem;
+    border-radius: 6px;
+    color: var(--dark);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-family: 'Georgia', serif;
+    transition: background 0.15s, color 0.15s, transform 0.15s;
+    border-left: 2px solid transparent;
+  }
+  body.lang-th nav a { font-family: 'Sarabun', sans-serif; }
+  nav a:hover {
+    background: rgba(140, 122, 174, 0.1);
+    border-left-color: var(--primary);
+    transform: translateX(2px);
+  }
+  nav a.active {
+    background: rgba(140, 122, 174, 0.15);
+    border-left-color: var(--primary);
+    color: var(--primary);
+    font-weight: bold;
+  }
+
+  /* ====== Main content ====== */
+  main {
+    padding: 3rem 4rem;
+    max-width: 1100px;
+  }
+
+  section { margin-bottom: 5rem; scroll-margin-top: 2rem; }
+
+  h1 {
+    font-family: 'Georgia', serif;
+    font-size: 3.2rem;
+    color: var(--dark);
+    line-height: 1.1;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.01em;
+  }
+  body.lang-th h1 { font-size: 3rem; line-height: 1.2; font-weight: 700; }
+  h1 .accent {
+    color: var(--primary);
+    font-style: italic;
+    font-weight: normal;
+  }
+  body.lang-th h1 .accent { font-weight: 400; }
+
+  h2 {
+    font-family: 'Georgia', serif;
+    font-size: 2rem;
+    color: var(--dark);
+    margin-bottom: 1rem;
+    margin-top: 0.5rem;
+    line-height: 1.2;
+  }
+  body.lang-th h2 { font-weight: 700; line-height: 1.3; }
+
+  h3 {
+    font-family: 'Georgia', serif;
+    font-size: 1.35rem;
+    color: var(--dark);
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+  }
+  body.lang-th h3 { font-weight: 600; font-size: 1.3rem; }
+
+  .section-label {
+    font-family: 'Calibri', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: var(--secondary);
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+  body.lang-th .section-label {
+    font-family: 'Sarabun', sans-serif;
+    text-transform: none;
+    letter-spacing: 0.06em;
+    font-size: 0.85rem;
+  }
+
+  p {
+    font-family: 'Georgia', serif;
+    font-size: 1.05rem;
+    color: var(--body);
+    margin-bottom: 1rem;
+  }
+  body.lang-th p { font-family: 'Sarabun', sans-serif; }
+
+  .lead {
+    font-size: 1.2rem;
+    color: var(--dark);
+    font-style: italic;
+    line-height: 1.5;
+    margin: 1rem 0 2rem;
+    max-width: 720px;
+  }
+  body.lang-th .lead { font-style: normal; line-height: 1.7; }
+
+  /* ====== Hero ====== */
+  .hero {
+    position: relative;
+    padding: 4rem 0 3rem;
+    margin-bottom: 3rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -1rem; right: 0;
+    width: 200px; height: 200px;
+    background: var(--peach);
+    border-radius: 50%;
+    z-index: -1;
+    opacity: 0.6;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    top: 8rem; right: 8rem;
+    width: 80px; height: 80px;
+    background: var(--mint);
+    border-radius: 50%;
+    z-index: -1;
+    opacity: 0.7;
+  }
+
+  /* ====== Cards ====== */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.25rem;
+    margin: 1.5rem 0;
+  }
+  .card {
+    background: var(--lavender);
+    padding: 1.5rem;
+    border-radius: 10px;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(140, 122, 174, 0.15);
+  }
+  .card.peach { background: var(--peach); }
+  .card.mint  { background: var(--mint); }
+  .card.sky   { background: var(--sky); }
+  .card.rose  { background: var(--rose); }
+
+  .card .num {
+    font-family: 'Georgia', serif;
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: var(--primary);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+  .card.peach .num { color: var(--secondary); }
+  .card.mint  .num { color: var(--tertiary); }
+  .card.sky   .num { color: var(--primary); }
+  .card.rose  .num { color: var(--secondary); }
+
+  .card h4 {
+    font-family: 'Georgia', serif;
+    font-size: 1.15rem;
+    color: var(--dark);
+    margin-bottom: 0.4rem;
+  }
+  body.lang-th .card h4 { font-family: 'Sarabun', sans-serif; font-weight: 700; }
+  .card p {
+    font-size: 0.95rem;
+    color: var(--body);
+    margin: 0;
+  }
+
+  /* ====== Prompt blocks ====== */
+  .prompt-block {
+    background: var(--cream);
+    border-left: 3px solid var(--primary);
+    border-radius: 0 8px 8px 0;
+    padding: 1.5rem 1.75rem;
+    margin: 1.5rem 0 1rem;
+    position: relative;
+  }
+  .prompt-block.secondary { border-left-color: var(--secondary); }
+  .prompt-block.tertiary  { border-left-color: var(--tertiary); }
+
+  .prompt-block .prompt-num {
+    font-family: 'Calibri', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: var(--primary);
+    margin-bottom: 0.25rem;
+  }
+  body.lang-th .prompt-block .prompt-num {
+    font-family: 'Sarabun', sans-serif;
+    text-transform: none;
+    letter-spacing: 0.05em;
+    font-size: 0.8rem;
+  }
+  .prompt-block.secondary .prompt-num { color: var(--secondary); }
+  .prompt-block.tertiary  .prompt-num { color: var(--tertiary); }
+
+  .prompt-block h3 {
+    font-family: 'Georgia', serif;
+    font-size: 1.2rem;
+    color: var(--dark);
+    margin: 0 0 1rem 0;
+  }
+
+  pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 1.25rem;
+    border-radius: 6px;
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 0.85rem;
+    line-height: 1.55;
+    overflow-x: auto;
+    margin: 0.5rem 0 1rem;
+    position: relative;
+  }
+
+  .copy-btn {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    background: rgba(232, 228, 240, 0.15);
+    color: var(--code-text);
+    border: 1px solid rgba(232, 228, 240, 0.3);
+    padding: 0.3rem 0.7rem;
+    border-radius: 4px;
+    font-family: 'Calibri', 'Sarabun', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  body.lang-th .copy-btn {
+    text-transform: none;
+    letter-spacing: 0.04em;
+    font-size: 0.78rem;
+  }
+  .copy-btn:hover { background: rgba(232, 228, 240, 0.25); }
+  .copy-btn.copied { background: var(--tertiary); color: white; border-color: var(--tertiary); }
+
+  .why {
+    background: var(--mint);
+    padding: 0.85rem 1.1rem;
+    border-radius: 6px;
+    margin-top: 0.75rem;
+    font-size: 0.92rem;
+    color: var(--dark);
+    line-height: 1.5;
+  }
+  body.lang-th .why { font-family: 'Sarabun', sans-serif; line-height: 1.7; font-size: 0.95rem; }
+  .why strong {
+    color: var(--tertiary);
+    font-family: 'Calibri', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 0.3rem;
+  }
+  body.lang-th .why strong {
+    font-family: 'Sarabun', sans-serif;
+    text-transform: none;
+    letter-spacing: 0.05em;
+    font-size: 0.85rem;
+  }
+
+  /* ====== Tables ====== */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-family: 'Calibri', sans-serif;
+    font-size: 0.95rem;
+  }
+  body.lang-th table { font-family: 'Sarabun', sans-serif; font-size: 0.98rem; }
+  th {
+    background: var(--lavender);
+    color: var(--primary);
+    text-align: left;
+    padding: 0.75rem 1rem;
+    font-family: 'Calibri', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-weight: bold;
+    border-bottom: 2px solid var(--border);
+  }
+  body.lang-th th {
+    font-family: 'Sarabun', sans-serif;
+    text-transform: none;
+    letter-spacing: 0.05em;
+    font-size: 0.85rem;
+  }
+  td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--dark);
+  }
+  body.lang-th td { line-height: 1.65; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(243, 238, 247, 0.4); }
+
+  /* ====== Buttons / Downloads ====== */
+  .download-strip {
+    background: var(--sky);
+    padding: 2rem;
+    border-radius: 12px;
+    margin: 2rem 0;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+  .download-strip .icon {
+    font-size: 3rem;
+    color: var(--primary);
+    line-height: 1;
+  }
+  .download-strip .info { flex: 1; min-width: 280px; }
+  .download-strip h4 {
+    font-family: 'Georgia', serif;
+    font-size: 1.2rem;
+    color: var(--dark);
+    margin-bottom: 0.25rem;
+  }
+  body.lang-th .download-strip h4 { font-family: 'Sarabun', sans-serif; font-weight: 700; }
+  .download-strip p {
+    margin: 0;
+    color: var(--body);
+    font-size: 0.95rem;
+  }
+  .btn {
+    background: var(--primary);
+    color: white;
+    padding: 0.7rem 1.5rem;
+    border-radius: 6px;
+    text-decoration: none;
+    font-family: 'Calibri', sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: bold;
+    transition: background 0.15s, transform 0.15s;
+    display: inline-block;
+    border: none;
+    cursor: pointer;
+  }
+  body.lang-th .btn {
+    font-family: 'Sarabun', sans-serif;
+    text-transform: none;
+    letter-spacing: 0.03em;
+    font-size: 0.95rem;
+  }
+  .btn:hover {
+    background: var(--dark);
+    transform: translateY(-1px);
+  }
+
+  /* ====== Callout boxes ====== */
+  .callout {
+    background: var(--peach);
+    padding: 1.25rem 1.5rem;
+    border-radius: 8px;
+    margin: 1.5rem 0;
+    font-family: 'Georgia', serif;
+    color: var(--dark);
+  }
+  body.lang-th .callout { font-family: 'Sarabun', sans-serif; line-height: 1.75; }
+  .callout.warning { background: var(--rose); }
+  .callout.info    { background: var(--sky); }
+  .callout strong  { color: var(--dark); }
+
+  /* ====== Lists ====== */
+  ul.clean-list {
+    list-style: none;
+    margin: 1rem 0;
+  }
+  ul.clean-list li {
+    padding: 0.4rem 0 0.4rem 1.5rem;
+    position: relative;
+    font-family: 'Georgia', serif;
+    color: var(--dark);
+  }
+  body.lang-th ul.clean-list li { font-family: 'Sarabun', sans-serif; line-height: 1.7; }
+  ul.clean-list li::before {
+    content: '•';
+    color: var(--primary);
+    font-size: 1.5rem;
+    position: absolute;
+    left: 0;
+    top: 0.1rem;
+  }
+
+  code {
+    background: rgba(140, 122, 174, 0.12);
+    color: var(--primary);
+    padding: 0.1rem 0.4rem;
+    border-radius: 3px;
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 0.9em;
+  }
+
+  .small-note {
+    font-style: italic;
+    color: var(--muted);
+    font-size: 0.95rem;
+    margin-top: -0.5rem;
+  }
+  body.lang-th .small-note { font-style: normal; }
+
+  /* ====== Footer ====== */
+  footer {
+    margin-top: 6rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+    font-family: 'Calibri', sans-serif;
+    font-size: 0.85rem;
+    color: var(--muted);
+    text-align: center;
+  }
+  body.lang-th footer { font-family: 'Sarabun', sans-serif; font-size: 0.9rem; }
+
+  /* ====== Mobile ====== */
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: 1fr; }
+    aside {
+      position: relative;
+      height: auto;
+      width: 100%;
+    }
+    main { padding: 2rem 1.5rem; }
+    h1 { font-size: 2.2rem; }
+    h2 { font-size: 1.6rem; }
+  }
+
+  /* ====== Print ====== */
+  @media print {
+    aside { display: none; }
+    main { padding: 0; }
+    .layout { grid-template-columns: 1fr; }
+    .copy-btn { display: none; }
+    pre { background: #f5f5f5; color: #333; border: 1px solid #ddd; }
+    .download-strip { display: none; }
+    section { page-break-inside: avoid; }
+    h2, h3 { page-break-after: avoid; }
+    .lang-toggle { display: none; }
+  }
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700&family=IBM+Plex+Sans+Thai:wght@500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="layout">
+
+  <!-- ==================== SIDEBAR ==================== -->
+  <aside>
+    <div class="brand">Gen AI Power Tools</div>
+    <div class="brand-sub"
+         data-en="for researchers"
+         data-th="สำหรับนักวิจัย">for researchers</div>
+
+    <div class="lang-toggle">
+      <button id="btn-en" onclick="setLang('en')">EN</button>
+      <button id="btn-th" onclick="setLang('th')">ไทย</button>
+    </div>
+
+    <nav>
+      <div class="nav-section" data-en="Overview" data-th="ภาพรวม">Overview</div>
+      <a href="#welcome" data-en="Welcome" data-th="ยินดีต้อนรับ">Welcome</a>
+      <a href="#agenda" data-en="Agenda" data-th="กำหนดการ">Agenda</a>
+
+      <div class="nav-section" data-en="Dataset" data-th="ชุดข้อมูล">Dataset</div>
+      <a href="#dataset" data-en="Sensor dataset" data-th="ข้อมูลเซ็นเซอร์">Sensor dataset</a>
+      <a href="#variables" data-en="Variable dictionary" data-th="พจนานุกรมตัวแปร">Variable dictionary</a>
+      <a href="#patterns" data-en="Embedded patterns" data-th="รูปแบบที่ซ่อนอยู่">Embedded patterns</a>
+
+      <div class="nav-section" data-en="Prompt Libraries" data-th="คลัง Prompts">Prompt Libraries</div>
+      <a href="#excel-prompts" data-en="Excel analysis (10)" data-th="วิเคราะห์ใน Excel (10)">Excel analysis (10)</a>
+      <a href="#methods-prompts" data-en="Research methods (10)" data-th="ออกแบบวิจัย (10)">Research methods (10)</a>
+      <a href="#imrad-prompts" data-en="IMRaD manuscript (10)" data-th="เขียน Manuscript (10)">IMRaD manuscript (10)</a>
+
+      <div class="nav-section" data-en="Reference" data-th="อ้างอิง">Reference</div>
+      <a href="#techniques" data-en="5 techniques recap" data-th="5 เทคนิคหลัก">5 techniques recap</a>
+      <a href="#resources" data-en="Resources" data-th="แหล่งข้อมูลเพิ่มเติม">Resources</a>
+    </nav>
+  </aside>
+
+  <!-- ==================== MAIN CONTENT ==================== -->
+  <main>
+
+    <!-- ========== HERO / WELCOME ========== -->
+    <section id="welcome" class="hero">
+      <span class="section-label"
+            data-en="Workshop Materials"
+            data-th="เอกสารประกอบเวิร์กชอป">Workshop Materials</span>
+      <h1 data-en="Gen AI Power Tools<br><span class='accent'>for the experienced researcher</span>"
+          data-th="Gen AI Power Tools<br><span class='accent'>สำหรับนักวิจัยที่มีประสบการณ์</span>">
+        Gen AI Power Tools<br><span class="accent">for the experienced researcher</span>
+      </h1>
+      <p class="lead"
+         data-en="A self-contained workshop pack: one realistic dataset, thirty copy-ready prompts across Excel analysis, research methods design, and IMRaD manuscript writing — built to teach effective prompting, not just AI usage."
+         data-th="ชุดเอกสารเวิร์กชอปแบบครบจบในที่เดียว — มีชุดข้อมูลจริงหนึ่งชุด พร้อม prompts พร้อมใช้ 30 ตัว ครอบคลุมการวิเคราะห์ข้อมูลใน Excel การออกแบบวิจัย และการเขียน manuscript แบบ IMRaD จุดเน้นคือสอนวิธี prompt ที่มีประสิทธิภาพ ไม่ใช่แค่การใช้ AI">
+      </p>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="num">1</div>
+          <h4 data-en="One dataset" data-th="ชุดข้อมูลเดียว">One dataset</h4>
+          <p data-en="730 days of environmental sensor data with embedded patterns for every common analysis type."
+             data-th="ข้อมูลเซ็นเซอร์สิ่งแวดล้อม 730 วัน ที่ฝังรูปแบบทางสถิติทุกประเภทไว้พร้อมวิเคราะห์"></p>
+        </div>
+        <div class="card peach">
+          <div class="num">30</div>
+          <h4 data-en="Copy-ready prompts" data-th="Prompts พร้อมใช้">Copy-ready prompts</h4>
+          <p data-en="Three prompt libraries: Excel analysis, methods design, manuscript writing."
+             data-th="สามคลัง — วิเคราะห์ใน Excel · ออกแบบวิจัย · เขียน manuscript"></p>
+        </div>
+        <div class="card mint">
+          <div class="num">5</div>
+          <h4 data-en="Recurring techniques" data-th="เทคนิคหลักที่ใช้ซ้ำได้">Recurring techniques</h4>
+          <p data-en="Every prompt demonstrates patterns participants can apply to their own work."
+             data-th="ทุก prompt สอนรูปแบบที่ผู้เข้าร่วมเอาไปใช้กับงานวิจัยของตัวเองได้"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== AGENDA ========== -->
+    <section id="agenda">
+      <span class="section-label" data-en="What's inside" data-th="เนื้อหาในเว็บนี้">What's inside</span>
+      <h2 data-en="Workshop agenda" data-th="กำหนดการเวิร์กชอป">Workshop agenda</h2>
+      <p data-en="Each section of this site corresponds to a workshop module. Run them in order for a full half-day workshop, or pick any single module as a standalone session."
+         data-th="แต่ละหัวข้อในเว็บไซต์นี้สอดคล้องกับโมดูลของเวิร์กชอป ใช้ตามลำดับสำหรับเวิร์กชอปครึ่งวันเต็ม หรือเลือกโมดูลใดโมดูลหนึ่งสำหรับ session สั้น ๆ ก็ได้"></p>
+      <table>
+        <thead>
+          <tr>
+            <th data-en="Module" data-th="โมดูล">Module</th>
+            <th data-en="Time" data-th="เวลา">Time</th>
+            <th data-en="Output" data-th="ผลลัพธ์">Output</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong data-en="Dataset orientation" data-th="แนะนำชุดข้อมูล">Dataset orientation</strong></td>
+            <td data-en="15 min" data-th="15 นาที">15 min</td>
+            <td data-en="Familiarity with the sensor data and its embedded patterns"
+                data-th="เข้าใจข้อมูลเซ็นเซอร์และรูปแบบที่ซ่อนอยู่"></td>
+          </tr>
+          <tr>
+            <td><strong data-en="Excel analysis prompts" data-th="Prompts วิเคราะห์ใน Excel">Excel analysis prompts</strong></td>
+            <td data-en="45 min" data-th="45 นาที">45 min</td>
+            <td data-en="Run 3-5 prompts against the data; verify against ground truth"
+                data-th="รัน prompts 3-5 ตัวกับข้อมูล แล้วตรวจสอบกับค่าจริง"></td>
+          </tr>
+          <tr>
+            <td><strong data-en="Research methods prompts" data-th="Prompts ออกแบบวิจัย">Research methods prompts</strong></td>
+            <td data-en="45 min" data-th="45 นาที">45 min</td>
+            <td data-en="Draft hypotheses, study design, and statistical analysis plan"
+                data-th="ร่างสมมติฐาน · ออกแบบศึกษา · แผนวิเคราะห์ทางสถิติ"></td>
+          </tr>
+          <tr>
+            <td><strong data-en="IMRaD manuscript prompts" data-th="Prompts เขียน manuscript">IMRaD manuscript prompts</strong></td>
+            <td data-en="60 min" data-th="60 นาที">60 min</td>
+            <td data-en="Generate full manuscript sections with embedded verification placeholders"
+                data-th="สร้าง manuscript ตาม IMRaD พร้อม placeholder สำหรับตรวจสอบ"></td>
+          </tr>
+          <tr>
+            <td><strong data-en="Techniques recap + Q&A" data-th="สรุปเทคนิค + ถาม-ตอบ">Techniques recap + Q&amp;A</strong></td>
+            <td data-en="15 min" data-th="15 นาที">15 min</td>
+            <td data-en="Five reusable prompting patterns to take home"
+                data-th="เทคนิค prompt 5 อย่างที่เอากลับไปใช้ได้"></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ========== DATASET ========== -->
+    <section id="dataset">
+      <span class="section-label" data-en="Module 1" data-th="โมดูล 1">Module 1</span>
+      <h2 data-en="The sensor dataset" data-th="ชุดข้อมูลเซ็นเซอร์สิ่งแวดล้อม">The sensor dataset</h2>
+
+      <div class="download-strip">
+        <div class="icon">⬇</div>
+        <div class="info">
+          <h4>environmental_sensor_data.csv</h4>
+          <p data-en="730 rows × 10 columns · ~50 KB · UTF-8 encoded"
+             data-th="730 แถว × 10 คอลัมน์ · ประมาณ 50 KB · UTF-8">730 rows × 10 columns · ~50 KB · UTF-8 encoded</p>
+        </div>
+        <a href="environmental_sensor_data.csv" download class="btn"
+           data-en="Download CSV" data-th="ดาวน์โหลด CSV">Download CSV</a>
+      </div>
+
+      <h3 data-en="One-paragraph description"
+          data-th="คำอธิบายชุดข้อมูล (หนึ่งย่อหน้า)">One-paragraph description</h3>
+      <p data-en="This dataset contains 730 daily environmental sensor readings collected over two consecutive years (January 1, 2023 to December 30, 2024) from a single monitoring station in a northern Thailand-like climate profile, with each row representing one calendar day and capturing ten variables: the observation date and its day-of-year index, day of week, meteorological season (cool, hot, or rainy), and a binary policy period indicator splitting the record at day 365 to mark a hypothetical air-quality intervention, alongside five numeric measurements — ambient temperature (°C), relative humidity (%), PM2.5 concentration (µg/m³), wind speed (m/s), and daily rainfall (mm). The data exhibit the structural features expected of real environmental monitoring records, including pronounced annual seasonality across all atmospheric variables, a weekly cycle in PM2.5 reflecting weekday-versus-Sunday traffic patterns, strong inter-variable correlations (notably an inverse humidity–PM2.5 relationship of r ≈ −0.87 and a positive temperature–PM2.5 association of r ≈ +0.69), a modest long-term trend, twelve embedded extreme-weather anomaly days representing storm events, and eight scattered missing values across the temperature, humidity, and PM2.5 columns to mirror sensor downtime, making the file suitable for time-series decomposition, correlation analysis, t-tests, ANOVA, regression modelling, and anomaly-detection exercises."
+         data-th="ชุดข้อมูลนี้ประกอบด้วยค่าที่วัดได้จากเซ็นเซอร์สิ่งแวดล้อมรายวัน 730 วัน ครอบคลุมช่วงเวลาสองปีติดต่อกัน (1 มกราคม 2566 ถึง 30 ธันวาคม 2567) จากสถานีตรวจวัดหนึ่งแห่งในพื้นที่ที่มีลักษณะภูมิอากาศแบบภาคเหนือของประเทศไทย โดยแต่ละแถวแทนหนึ่งวันปฏิทินและเก็บข้อมูล 10 ตัวแปร ได้แก่ วันที่สังเกตและดัชนีวันในรอบปี วันในสัปดาห์ ฤดูกาลทางอุตุนิยมวิทยา (เย็น ร้อน ฝน) และตัวบ่งชี้ช่วงนโยบายแบบสองค่าที่แบ่งบันทึกที่วันที่ 365 เพื่อระบุการแทรกแซงเชิงนโยบายด้านคุณภาพอากาศแบบสมมติ พร้อมกับการวัดเชิงปริมาณห้าตัว — อุณหภูมิอากาศ (°C) ความชื้นสัมพัทธ์ (%) ค่า PM2.5 (µg/m³) ความเร็วลม (m/s) และปริมาณฝน (mm) ข้อมูลแสดงคุณลักษณะเชิงโครงสร้างที่พบในการตรวจวัดสิ่งแวดล้อมจริง รวมถึงความเป็นฤดูกาลรายปีที่ชัดเจน วงรอบรายสัปดาห์ของ PM2.5 ที่สะท้อนรูปแบบการจราจรวันธรรมดาเทียบกับวันอาทิตย์ ความสัมพันธ์ระหว่างตัวแปรที่แข็งแรง แนวโน้มระยะยาวเล็กน้อย วันที่มีสภาพอากาศแปรปรวนรุนแรงที่ฝังไว้ 12 วัน และค่าหายไป 8 จุดที่กระจายในคอลัมน์ตัวเลข เพื่อเลียนแบบช่วงที่เซ็นเซอร์ขัดข้อง ทำให้ไฟล์นี้เหมาะกับการแยกองค์ประกอบอนุกรมเวลา การวิเคราะห์สหสัมพันธ์ t-test, ANOVA, การถดถอย และการตรวจจับค่าผิดปกติ"></p>
+    </section>
+
+    <!-- ========== VARIABLE DICTIONARY ========== -->
+    <section id="variables">
+      <span class="section-label" data-en="Module 1" data-th="โมดูล 1">Module 1</span>
+      <h2 data-en="Variable dictionary" data-th="พจนานุกรมตัวแปร">Variable dictionary</h2>
+      <table>
+        <thead>
+          <tr>
+            <th data-en="Column" data-th="คอลัมน์">Column</th>
+            <th data-en="Type" data-th="ชนิดข้อมูล">Type</th>
+            <th data-en="Description" data-th="คำอธิบาย">Description</th>
+            <th data-en="Range / Values" data-th="ช่วงค่า">Range / Values</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><code>date</code></td><td>String</td><td data-en="Calendar date" data-th="วันที่ปฏิทิน"></td><td data-en="2023-01-01 to 2024-12-30" data-th="2023-01-01 ถึง 2024-12-30"></td></tr>
+          <tr><td><code>day_of_year</code></td><td>Integer</td><td data-en="Day of year, 1-365" data-th="วันในรอบปี 1-365"></td><td>1-365</td></tr>
+          <tr><td><code>weekday</code></td><td>String</td><td data-en="Day of week" data-th="วันในสัปดาห์"></td><td>Mon, Tue, ..., Sun</td></tr>
+          <tr><td><code>season</code></td><td>Categorical</td><td data-en="Meteorological season" data-th="ฤดูกาลทางอุตุนิยมวิทยา"></td><td>cool, hot, rainy</td></tr>
+          <tr><td><code>period</code></td><td>Binary</td><td data-en="Policy phase indicator" data-th="ช่วงนโยบาย (ก่อน/หลัง)"></td><td>pre_policy, post_policy</td></tr>
+          <tr><td><code>temperature_c</code></td><td>Numeric</td><td data-en="Ambient temperature" data-th="อุณหภูมิอากาศ"></td><td data-en="~16 to 36 °C" data-th="~16 ถึง 36 °C"></td></tr>
+          <tr><td><code>humidity_pct</code></td><td>Numeric</td><td data-en="Relative humidity" data-th="ความชื้นสัมพัทธ์"></td><td data-en="~42 to 99 %" data-th="~42 ถึง 99 %"></td></tr>
+          <tr><td><code>pm25_ugm3</code></td><td>Numeric</td><td data-en="PM2.5 concentration" data-th="ความเข้มข้น PM2.5"></td><td data-en="~2 to 78 µg/m³" data-th="~2 ถึง 78 µg/m³"></td></tr>
+          <tr><td><code>wind_speed_ms</code></td><td>Numeric</td><td data-en="Wind speed" data-th="ความเร็วลม"></td><td data-en="~0.5 to 8 m/s" data-th="~0.5 ถึง 8 m/s"></td></tr>
+          <tr><td><code>rainfall_mm</code></td><td>Numeric</td><td data-en="Daily rainfall" data-th="ปริมาณฝนรายวัน"></td><td data-en="0 to ~73 mm" data-th="0 ถึง ~73 mm"></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ========== PATTERNS ========== -->
+    <section id="patterns">
+      <span class="section-label" data-en="Module 1" data-th="โมดูล 1">Module 1</span>
+      <h2 data-en="Embedded patterns — for instructors"
+          data-th="รูปแบบที่ฝังไว้ในข้อมูล — สำหรับผู้สอน">Embedded patterns — for instructors</h2>
+      <p data-en="The dataset was engineered to contain specific patterns. Use this as your answer key when verifying participants' AI-assisted analyses."
+         data-th="ชุดข้อมูลนี้ออกแบบให้มีรูปแบบทางสถิติบางอย่างฝังไว้ ใช้ตารางนี้เป็นเฉลยตอนตรวจสอบผลการวิเคราะห์ที่ผู้เข้าร่วมได้จาก AI"></p>
+
+      <table>
+        <thead>
+          <tr>
+            <th data-en="Pattern" data-th="รูปแบบ">Pattern</th>
+            <th data-en="Where to find it" data-th="หาได้จากที่ไหน">Where to find it</th>
+            <th data-en="Expected value" data-th="ค่าที่คาดหวัง">Expected value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><strong data-en="Seasonality" data-th="ความเป็นฤดูกาล"></strong></td><td data-en="Annual sinusoid on temp, humidity, PM2.5" data-th="คลื่นรายปีของอุณหภูมิ ความชื้น PM2.5"></td><td data-en="Visible in time series plot" data-th="เห็นชัดในกราฟ time series"></td></tr>
+          <tr><td><strong data-en="Weekly cycle" data-th="วงรอบรายสัปดาห์"></strong></td><td data-en="PM2.5 by weekday" data-th="PM2.5 แยกตามวันในสัปดาห์"></td><td data-en="Sunday ~5 µg/m³ lower than weekdays" data-th="วันอาทิตย์ต่ำกว่าวันธรรมดา ~5 µg/m³"></td></tr>
+          <tr><td><strong data-en="Long-term trend" data-th="แนวโน้มระยะยาว"></strong></td><td data-en="Linear regression on day_idx" data-th="regression บนดัชนีวัน"></td><td data-en="Slight positive slope on PM2.5 (~0.01 µg/m³/day)" data-th="PM2.5 มีแนวโน้มเพิ่มขึ้นเล็กน้อย (~0.01 µg/m³/วัน)"></td></tr>
+          <tr><td><strong data-en="Strong correlation" data-th="สหสัมพันธ์ที่แข็งแรง"></strong></td><td data-en="humidity ↔ PM2.5" data-th="ความชื้น ↔ PM2.5"></td><td>r ≈ −0.87, p &lt; 0.001</td></tr>
+          <tr><td><strong data-en="Moderate correlation" data-th="สหสัมพันธ์ปานกลาง"></strong></td><td data-en="temperature ↔ PM2.5" data-th="อุณหภูมิ ↔ PM2.5"></td><td>r ≈ +0.69, p &lt; 0.001</td></tr>
+          <tr><td><strong data-en="Intervention effect" data-th="ผลของการแทรกแซง"></strong></td><td data-en="pre_policy vs post_policy PM2.5" data-th="pre_policy เทียบ post_policy"></td><td data-en="Mean drop ~3.9 µg/m³, p < 0.001" data-th="ค่าเฉลี่ยลดลง ~3.9 µg/m³, p < 0.001"></td></tr>
+          <tr><td><strong data-en="ANOVA across seasons" data-th="ANOVA ระหว่างฤดูกาล"></strong></td><td>PM2.5 ~ season</td><td data-en="F large, p < 0.001, all pairwise differ" data-th="F สูงมาก, p < 0.001, ทุกคู่ต่างกัน"></td></tr>
+          <tr><td><strong data-en="Anomaly days" data-th="วันผิดปกติ"></strong></td><td data-en="Storm event days" data-th="วันที่มีพายุ"></td><td data-en="12 hidden outliers with multivariate extremes" data-th="12 วันที่ค่าผิดปกติหลายตัวแปรพร้อมกัน"></td></tr>
+          <tr><td><strong data-en="Missing values" data-th="ค่าหายไป"></strong></td><td data-en="temp, humidity, PM2.5" data-th="อุณหภูมิ ความชื้น PM2.5"></td><td data-en="8 NaN cells total (~1.1%)" data-th="NaN 8 จุด (~1.1%)"></td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout info">
+        <strong data-en="Teaching tip:" data-th="เคล็ดลับการสอน:">Teaching tip:</strong>
+        <span data-en=" Reveal these patterns only after participants run prompts. The exercise is more valuable when they discover the structure through prompting, not from a cheat sheet."
+              data-th=" เปิดเผยรูปแบบเหล่านี้หลังจากผู้เข้าร่วมรัน prompts แล้วเท่านั้น การฝึกจะมีคุณค่ามากกว่าเมื่อพวกเขาค้นพบโครงสร้างเองจากการใช้ AI ไม่ใช่ได้เฉลยมาก่อน"> Reveal these patterns only after participants run prompts.</span>
+      </div>
+    </section>
+
+    <!-- ========== EXCEL PROMPTS ========== -->
+    <section id="excel-prompts">
+      <span class="section-label" data-en="Module 2" data-th="โมดูล 2">Module 2</span>
+      <h2 data-en="10 prompts for Excel data analysis"
+          data-th="10 prompts สำหรับวิเคราะห์ข้อมูลใน Excel">10 prompts for Excel data analysis</h2>
+      <p class="lead"
+         data-en="Designed for Claude in Excel (or any AI spreadsheet assistant). Each prompt specifies the exact test, demands verification, and bounds the output format."
+         data-th="ออกแบบมาสำหรับใช้กับ Claude ใน Excel (หรือ AI ผู้ช่วยใน spreadsheet ตัวอื่น) แต่ละ prompt ระบุการทดสอบที่ต้องการชัดเจน บังคับให้ตรวจสอบได้ และจำกัดรูปแบบผลลัพธ์"></p>
+
+      <p class="small-note"
+         data-en="Note: prompts are kept in English because Claude gives better output. Descriptions and explanations are in your selected language."
+         data-th="หมายเหตุ: prompts ทั้งหมดเป็นภาษาอังกฤษ เพราะให้ผลลัพธ์จาก AI ดีกว่า ข้อความบรรยายและคำอธิบายเป็นไปตามภาษาที่เลือก"></p>
+
+      <div class="prompt-block">
+        <div class="prompt-num">Prompt 01</div>
+        <h3 data-en="Descriptive statistics with confidence intervals"
+            data-th="สถิติเชิงพรรณนา พร้อมช่วงความเชื่อมั่น">Descriptive statistics with confidence intervals</h3>
+        <pre><button class="copy-btn" onclick="copyPrompt(this)" data-en="Copy" data-th="คัดลอก">Copy</button>Compute mean, median, SD, min, max, and 95% confidence interval
+for temperature_c, humidity_pct, pm25_ugm3, wind_speed_ms, and
+rainfall_mm. Output as a table. Handle missing values by
+listwise deletion and report the n used for each variable.</pre>
+      </div>
+
+      <div class="prompt-block secondary">
+        <div class="prompt-num">Prompt 02</div>
+        <h3 data-en="Correlation matrix with significance flags"
+            data-th="เมทริกซ์สหสัมพันธ์พร้อมเครื่องหมายระดับนัยสำคัญ">Correlation matrix with significance flags</h3>
+        <pre><button class="copy-btn" onclick="copyPrompt(this)" data-en="Copy" data-th="คัดลอก">Copy</button>Build a Pearson correlation matrix for all 5 numeric columns.
+For each pair, also compute the p-value. In a second table,
+flag correlations as: strong (|r|>0.7), moderate (0.4-0.7),
+weak (<0.4). Note which pairs are significant at p<0.05.</pre>
+      </div>
+
+      <div class="prompt-block tertiary">
+        <div class="prompt-num">Prompt 03</div>
+        <h3 data-en="Two-sample t-test on the policy intervention"
+            data-th="t-test แบบสองกลุ่ม ทดสอบผลของนโยบาย">Two-sample t-test on the policy intervention</h3>
+        <pre><button class="copy-btn" onclick="copyPrompt(this)" data-en="Copy" data-th="คัดลอก">Copy</button>Compare pm25_ugm3 between period="pre_policy" and "post_policy".
+Run a Welch's t-test (unequal variances). Report: mean of each
+group, mean difference with 95% CI, t-statistic, df, p-value.
+State whether the difference is significant at alpha=0.05 and
+quote the exact source cells you used.</pre>
+      </div>
+
+      <div class="prompt-block">
+        <div class="prompt-num">Prompt 04</div>
+        <h3 data-en="One-way ANOVA across seasons"
+            data-th="One-way ANOVA ระหว่างฤดูกาล">One-way ANOVA across seasons</h3>
+        <pre><button class="copy-btn" onclick="copyPrompt(this)" data-en="Copy" data-th="คัดลอก">Copy</button>Test whether pm25_ugm3 differs across the three seasons (cool,
+hot, rainy). Run one-way ANOVA: report F-statistic, df between
+and within, p-value. If p<0.05, follow up with Tukey HSD pairwise
+comparisons and identify which seasons differ.</pre>
+      </div>
+
+      <div class="prompt-block secondary">
+        <div class="prompt-num">Prompt 05</div>
+        <h3 data-en="Linear regression with RMSE"
+            data-th="Linear regression พร้อม RMSE">Linear regression with RMSE</h3>
+        <pre><button class="copy-btn" onclick="copyPrompt(this)" data-en="Copy" data-th="คัดลอก">Copy</button>Fit a linear regression: pm25_ugm3 ~ temperature_c + humidity_pct
++ wind_speed_ms. Report: coefficients with 95% CI and p-values,
+R-squared, adjusted R-squared, RMSE, and residual standard error.
+Then list the 10 rows with the largest absolute residuals — these
+are candidate anomalies.</pre>
+      </div>
+
+      <div class="prompt-block tertiary">
+        <div class="prompt-num">Prompt 06</div>
+        <h3 data-en="Time series decomposition"
+            data-th="การแยกองค์ประกอบอนุกรมเวลา">Time series decomposition</h3>
+        <pre><button class="copy-btn" onclick="copyPrompt(this)" data-en="Copy" data-th="คัดลอก">Copy</button>Treat pm25_ugm3 as a daily time series indexed by date. Decompose
+it into trend, seasonal (period=365), and residual components
+using additive decomposition. Output the trend and residual
+columns next to the original data. Report whether the trend
+slope is positive or negative and by how much per year.</pre>
+      </div>
+
+      <div class="prompt-block">
+        <div class="prompt-num">Prompt 07</div>
+        <h3 data-en="Weekly pattern detection"
+            data-th="ตรวจหารูปแบบรายสัปดาห์">Weekly pattern detection</h3>
+        <pre><button class="copy-btn" onclick="copyPrompt(this)" data-en="Copy" data-th="คัดลอก">Copy</button>Group pm25_ugm3 by the weekday column. Compute mean and 95% CI
+for each weekday. Run a one-way ANOVA across weekdays. Report
+which days differ from the overall mean. Hypothesis to check:
+Sunday is lower than weekdays.</pre>
+      </div>
+
+      <div class="prompt-block secondary">
+        <div class="prompt-num">Prompt 08</div>
+        <h3 data-en="Anomaly detection with z-scores"
+            data-th="ตรวจจับค่าผิดปกติด้วย z-score">Anomaly detection with z-scores</h3>
+        <pre><button class="copy-btn" onclick="copyPrompt(this)" data-en="Copy" data-th="คัดลอก">Copy</button>For each row, compute a z-score for temperature_c, humidity_pct,
+pm25_ugm3, and wind_speed_ms relative to that row's season group
+(not the global mean). Flag any row where two or more variables
+have |z|>2.5 as a candidate anomaly. List the flagged rows with
+their date and which variables were extreme.</pre>
+      </div>
+
+      <div class="prompt-block tertiary">
+        <div class="prompt-num">Prompt 09</div>
+        <h3 data-en="Missing data audit and imputation comparison"
+            data-th="ตรวจสอบค่าหายไป และเปรียบเทียบวิธี imputation">Missing data audit and imputation comparison</h3>
+        <pre><button class="copy-btn" onclick="copyPrompt(this)" data-en="Copy" data-th="คัดลอก">Copy</button>For each numeric column, report the count and percentage of
+missing values, and the dates where they occur. Then compute
+the column mean three ways: (1) listwise deletion, (2) mean
+imputation, (3) linear interpolation by date. Show how much
+the resulting means differ and which approach you'd recommend
+for this dataset.</pre>
+      </div>
+
+      <div class="prompt-block">
+        <div class="prompt-num">Prompt 10</div>
+        <h3 data-en="Hypothesis-driven analysis with verification"
+            data-th="วิเคราะห์แบบขับเคลื่อนด้วยสมมติฐาน พร้อมตรวจสอบได้">Hypothesis-driven analysis with verification</h3>
+        <pre><button class="copy-btn" onclick="copyPrompt(this)" data-en="Copy" data-th="คัดลอก">Copy</button>Hypothesis: humidity is the strongest predictor of low pm25_ugm3
+(washout effect). Test this by:
+(1) Pearson r and p-value for humidity_pct vs pm25_ugm3
+(2) Same for rainfall_mm vs pm25_ugm3
+(3) Same for wind_speed_ms vs pm25_ugm3
+Rank predictors by |r|. Then quote the exact cell ranges used
+for each calculation so I can audit the result.</pre>
+      </div>
+
+      <div class="callout warning">
+        <strong data-en="For workshop facilitators:" data-th="สำหรับผู้สอน:">For workshop facilitators:</strong>
+        <span data-en=" Prompts 5, 6, and 8 are the most demanding. If Claude struggles, break them into smaller steps. Always follow any p-value result with: "
+              data-th=" Prompts 5, 6 และ 8 ยากที่สุด ถ้า Claude ตอบไม่ดี ให้แบ่งเป็นขั้นเล็ก ๆ ทีละขั้น และไม่ว่าได้ค่า p-value มาจาก prompt ไหน ให้ถามต่อด้วย: ">
+        </span>
+        <em>"Show the test assumptions and whether they're met."</em>
+      </div>
+    </section>
+
+    <!-- ========== METHODS PROMPTS ========== -->
+    <section id="methods-prompts">
+      <span class="section-label" data-en="Module 3" data-th="โมดูล 3">Module 3</span>
+      <h2 data-en="10 prompts for research methods design"
+          data-th="10 prompts สำหรับออกแบบวิธีวิจัย">10 prompts for research methods design</h2>
+      <p class="lead"
+         data-en="Move from descriptive analysis to publishable study design. Run roughly in order — early prompts frame the study, later ones stress-test it."
+         data-th="ก้าวจากการวิเคราะห์เชิงพรรณนาไปสู่การออกแบบศึกษาที่ตีพิมพ์ได้ ใช้เรียงตามลำดับโดยประมาณ — prompts แรก ๆ ใช้กำหนดกรอบศึกษา prompts ท้าย ๆ ใช้ทดสอบความแข็งแรงของการออกแบบ"></p>
+
+      <div class="prompt-block">
+        <div class="prompt-num">Prompt 01</div>
+        <h3 data-en="Research question generation from data structure"
+            data-th="สร้างคำถามวิจัยจากโครงสร้างข้อมูล">Research question generation from data structure</h3>
+        <pre><button class="copy-btn" onclick="copyPrompt(this)" data-en="Copy" data-th="คัดลอก">Copy</button>You are a senior environmental health researcher. Looking at this
+dataset (730 days, variables: temperature, humidity, PM2.5, wind
+speed, rainfall, with a policy intervention at day 365), generate
+5 publishable research questions this data could answer. For each:
+state the question, the variables involved, and which journal
+audience it would fit (clinical, environmental, policy, or
+atmospheric science).</pre>
+      </div>
+
+      <div class="prompt-block secondary">
+        <div class="prompt-num">Prompt 02</div>
+        <h3 data-en="Study design selection with justification"
+            data-th="เลือกรูปแบบการศึกษาพร้อมเหตุผล">Study design selection with justification</h3>
+        <pre><button class="copy-btn" onclick="copyPrompt(this)" data-en="Copy" data-th="คัดลอก">Copy</button>I want to evaluate whether the policy intervention at day 365
+actually reduced PM2.5. Recommend the most rigorous study design
+this dataset supports — and name the design (interrupted time
+series, before-after, pre-post comparison, etc.). Justify why
+that design fits, list its key assumptions, and identify which
+assumptions this dataset may violate.</pre>
+      </div>
+
+      <div class="prompt-block tertiary">
+        <div class="prompt-num">Prompt 03</div>
+        <h3 data-en="Hypotheses with directional predictions"
+            data-th="สมมติฐานพร้อมทิศทางที่คาดการณ์">Hypotheses with directional predictions</h3>
+        <pre><button class="copy-btn" onclick="copyPrompt(this)" data-en="Copy" data-th="คัดลอก">Copy</button>Based on the dataset variables, formulate 4 testable hypotheses:
+2 directional (H1, H2) and 2 non-directional (H3, H4). For each:
+state H0 and H1, identify the statistical test, specify alpha,
+and predict effect direction. Frame them so each could appear
+in a methods section verbatim.</pre>
+      </div>
+
+      <div class="prompt-block">
+        <div class="prompt-num">Prompt 04</div>
+        <h3 data-en="SMART objectives from a research question"
+            data-th="วัตถุประสงค์แบบ SMART จากคำถามวิจัย">SMART objectives from a research question</h3>
+        <pre><button class="copy-btn" onclick="copyPrompt(this)" data-en="Copy" data-th="คัดลอก">Copy</button>Take this research question: "Did the policy intervention reduce
+PM2.5 levels in Phayao between 2023 and 2024, controlling for
+seasonal and meteorological factors?" Rewrite it as one primary
+objective and 3 secondary objectives, each following SMART
+criteria (Specific, Measurable, Achievable, Relevant, Time-bound).
+Output in the format used in grant applications.</pre>
+      </div>
+
+      <div class="prompt-block secondary">
+        <div class="prompt-num">Prompt 05</div>
+        <h3 data-en="Sample size and power justification"
+            data-th="คำนวณ sample size และ power">Sample size and power justification</h3>
+        <pre><button class="copy-btn" onclick="copyPrompt(this)" data-en="Copy" data-th="คัดลอก">Copy</button>This dataset has 365 pre-policy and 365 post-policy daily readings
+for PM2.5. Working backward: (1) for a two-sample t-test with
+alpha=0.05 and power=0.80, what minimum detectable effect size
+could this n support? (2) what was the observed effect size
+(Cohen's d) in the data? (3) was this study adequately powered
+to detect smaller policy effects? Show the calculations.</pre>
+      </div>
+
+      <div class="prompt-block tertiary">
+        <div class="prompt-num">Prompt 06</div>
+        <h3 data-en="Variable operationalization"
+            data-th="นิยามและวิธีวัดตัวแปร">Variable operationalization</h3>
+        <pre><button class="copy-btn" onclick="copyPrompt(this)" data-en="Copy" data-th="คัดลอก">Copy</button>For a paper using this dataset, write the "Variables and
+measurements" subsection of the Methods. For each of the 5
+numeric variables: state the construct it measures, units,
+measurement frequency, expected range, treatment of missing
+values, and any transformation needed (e.g., log transform
+for skewed PM2.5). Write in formal academic prose, ~250 words.</pre>
+      </div>
+
+      <div class="prompt-block">
+        <div class="prompt-num">Prompt 07</div>
+        <h3 data-en="Confounder identification and control strategy"
+            data-th="ระบุตัวแปรกวน และวิธีควบคุม">Confounder identification and control strategy</h3>
+        <pre><button class="copy-btn" onclick="copyPrompt(this)" data-en="Copy" data-th="คัดลอก">Copy</button>For the research question "Did the policy reduce PM2.5?", list
+potential confounders in this dataset and outside it. For each:
+classify as measured (in the data), partially measured, or
+unmeasured. Recommend a statistical control strategy for each
+measured confounder (e.g., include as covariate, stratify,
+match). State which unmeasured confounders most threaten
+causal inference.</pre>
+      </div>
+
+      <div class="prompt-block secondary">
+        <div class="prompt-num">Prompt 08</div>
+        <h3 data-en="Inclusion / exclusion criteria for the analytic sample"
+            data-th="เกณฑ์การคัดเข้า/คัดออกของกลุ่มตัวอย่าง">Inclusion / exclusion criteria for the analytic sample</h3>
+        <pre><button class="copy-btn" onclick="copyPrompt(this)" data-en="Copy" data-th="คัดลอก">Copy</button>Before analyzing, I need to define which rows go into the
+analytic sample. Draft inclusion and exclusion criteria as
+they would appear in a methods section. Consider: missing
+data thresholds, outlier handling (the 12 anomaly days),
+seasonal balance, and the policy transition window. For each
+criterion, justify the decision and state how many rows it
+would drop. Output as a PRISMA-style flow.</pre>
+      </div>
+
+      <div class="prompt-block tertiary">
+        <div class="prompt-num">Prompt 09</div>
+        <h3 data-en="Statistical analysis plan (SAP)"
+            data-th="แผนการวิเคราะห์ทางสถิติ (SAP)">Statistical analysis plan (SAP)</h3>
+        <pre><button class="copy-btn" onclick="copyPrompt(this)" data-en="Copy" data-th="คัดลอก">Copy</button>Write a complete Statistical Analysis Plan for this dataset.
+Include sections: (1) Primary analysis with exact test,
+(2) Secondary analyses, (3) Sensitivity analyses, (4) Handling
+of missing data, (5) Multiple comparisons correction, (6)
+Software and version, (7) Pre-specified subgroup analyses,
+(8) What constitutes a positive finding. Format as if for
+trial registration. Maximum 600 words.</pre>
+      </div>
+
+      <div class="prompt-block">
+        <div class="prompt-num">Prompt 10</div>
+        <h3 data-en="Limitations and threats to validity"
+            data-th="ข้อจำกัดและภัยคุกคามต่อความตรง">Limitations and threats to validity</h3>
+        <pre><button class="copy-btn" onclick="copyPrompt(this)" data-en="Copy" data-th="คัดลอก">Copy</button>Acting as Reviewer 2 for an environmental health journal,
+identify the 5 most serious methodological limitations of any
+study using this dataset to make causal claims about the policy
+intervention. For each limitation: (1) name it precisely
+(confounding, regression to mean, ecological fallacy, etc.),
+(2) explain why it threatens validity here, (3) suggest a
+specific analytic remedy, (4) state whether the remedy would
+fully or partially address it.</pre>
+      </div>
+    </section>
+
+    <!-- ========== IMRAD PROMPTS ========== -->
+    <section id="imrad-prompts">
+      <span class="section-label" data-en="Module 4" data-th="โมดูล 4">Module 4</span>
+      <h2 data-en="10 prompts for manuscript writing (IMRaD)"
+          data-th="10 prompts สำหรับเขียน manuscript (IMRaD)">10 prompts for manuscript writing (IMRaD)</h2>
+      <p class="lead"
+         data-en="One prompt per IMRaD section plus title, abstract, conclusion, and cover letter. Each is annotated with the prompting technique it demonstrates."
+         data-th="หนึ่ง prompt ต่อหนึ่งส่วนของโครงสร้าง IMRaD บวกกับชื่อเรื่อง บทคัดย่อ บทสรุป และจดหมายส่งบรรณาธิการ ทุก prompt มีคำอธิบายว่าใช้เทคนิค prompting อะไรและทำไมมันได้ผล"></p>
+
+      <!-- Title -->
+      <div class="prompt-block">
+        <div class="prompt-num" data-en="Prompt 01 · Title" data-th="Prompt 01 · ชื่อเรื่อง">Prompt 01 · Title</div>
+        <h3 data-en="Title generation" data-th="สร้างชื่อเรื่อง manuscript">Title generation</h3>
+        <pre><button class="copy-btn" onclick="copyPrompt(this)" data-en="Copy" data-th="คัดลอก">Copy</button>You are an experienced environmental health author publishing in
+mid-tier journals (IF 3-5). Based on this study — two years of
+daily PM2.5, temperature, humidity, wind, and rainfall data from
+a northern Thailand site, with a policy intervention at day 365
+that reduced PM2.5 by ~4 µg/m³ — generate 5 candidate titles.
+
+Constraints:
+- 12-18 words each
+- Include design type (interrupted time series)
+- Include the variable of primary interest (PM2.5)
+- Avoid "novel", "comprehensive", or other low-information words
+- Output as numbered list with one-sentence rationale for each
+
+Rank them at the end from most to least journal-ready.</pre>
+        <div class="why">
+          <strong data-en="Why it works" data-th="ทำไมมันได้ผล">Why it works</strong>
+          <span data-en="Gives the model a target IF range (constrains writing register), specifies exact constraints (length, content, banned words), and demands self-ranking."
+                data-th="กำหนดช่วง IF เป้าหมาย (คุมระดับภาษา) ระบุข้อจำกัดชัดเจน (จำนวนคำ คำต้องห้าม) และให้ AI จัดอันดับเอง — บังคับให้ใช้เกณฑ์ของตัวเองตัดสิน"></span>
+        </div>
+      </div>
+
+      <!-- Abstract -->
+      <div class="prompt-block secondary">
+        <div class="prompt-num" data-en="Prompt 02 · Abstract" data-th="Prompt 02 · บทคัดย่อ">Prompt 02 · Abstract</div>
+        <h3 data-en="Structured abstract (250 words)" data-th="บทคัดย่อแบบมีโครงสร้าง (250 คำ)">Structured abstract (250 words)</h3>
+        <pre><button class="copy-btn" onclick="copyPrompt(this)" data-en="Copy" data-th="คัดลอก">Copy</button>Write a structured abstract using the following sections:
+Background, Objective, Methods, Results, Conclusions.
+
+Study facts to use:
+- Dataset: 730 daily readings, Jan 2023 - Dec 2024, Phayao Thailand
+- Variables: PM2.5, temperature, humidity, wind, rainfall
+- Intervention: air-quality policy starting day 365
+- Primary analysis: Welch's t-test, pre vs post policy PM2.5
+- Result: mean PM2.5 dropped from 36.05 to 32.15 ug/m3, p<0.001
+- Correlation findings: humidity inversely correlated with
+  PM2.5 (r=-0.87, p<0.001)
+
+Hard limits:
+- Total 250 words (+/- 10)
+- No citations
+- Past tense for Methods and Results
+- Each section header on its own line, bold
+
+Do NOT invent numbers not listed above. If a section needs a
+detail I didn't give, write [TO ADD] in square brackets.</pre>
+        <div class="why">
+          <strong data-en="Why it works" data-th="ทำไมมันได้ผล">Why it works</strong>
+          <span data-en="Provides every number explicitly (prevents fabrication), uses [TO ADD] to surface gaps, locks format and tense."
+                data-th="ให้ตัวเลขทุกอย่างชัด ๆ (กัน AI กุข้อมูล) ใช้ [TO ADD] เพื่อชี้ช่องว่างที่ยังขาด ล็อกรูปแบบและกาล"></span>
+        </div>
+      </div>
+
+      <!-- Introduction -->
+      <div class="prompt-block tertiary">
+        <div class="prompt-num" data-en="Prompt 03 · Introduction" data-th="Prompt 03 · บทนำ">Prompt 03 · Introduction</div>
+        <h3 data-en="Introduction with funnel structure"
+            data-th="บทนำตามโครงสร้างกรวย (funnel)">Introduction with funnel structure</h3>
+        <pre><button class="copy-btn" onclick="copyPrompt(this)" data-en="Copy" data-th="คัดลอก">Copy</button>Draft the Introduction section (~600 words, 4 paragraphs)
+following the classic funnel structure:
+
+Paragraph 1 (broad context): Global air pollution burden, PM2.5
+as a health concern, why low- and middle-income countries are
+disproportionately affected. End with the regional relevance to
+Southeast Asia and biomass-burning seasons.
+
+Paragraph 2 (narrower context): What is known about PM2.5 drivers
+in northern Thailand — meteorology, agricultural burning,
+transboundary haze. Identify the established relationships
+(humidity washout, temperature-PM2.5 coupling).
+
+Paragraph 3 (the gap): What is NOT known. Specifically: limited
+evaluation of recent local air-quality policies using rigorous
+interrupted time-series designs at the daily resolution.
+
+Paragraph 4 (this study): State the aim, the design (ITS), the
+primary outcome (daily PM2.5), the timeframe, and the 3 specific
+objectives.
+
+Do not invent citations. Where a citation is needed, insert
+[CITATION: brief description of source needed] so I can fill
+in from my reference manager.</pre>
+        <div class="why">
+          <strong data-en="Why it works" data-th="ทำไมมันได้ผล">Why it works</strong>
+          <span data-en="Paragraph-by-paragraph structure (highest-leverage writing prompt technique); explicit citation placeholders prevent fabrication."
+                data-th="กำหนดโครงสร้างทีละย่อหน้า (เทคนิคที่ได้ผลที่สุดในการ prompt งานเขียน) ใช้ placeholder [CITATION] แทนการให้ AI กุการอ้างอิงเอง"></span>
+        </div>
+      </div>
+
+      <!-- Methods 1 -->
+      <div class="prompt-block">
+        <div class="prompt-num" data-en="Prompt 04 · Methods (design)" data-th="Prompt 04 · วิธีการ (การออกแบบ)">Prompt 04 · Methods (design)</div>
+        <h3 data-en="Methods: Study design and setting"
+            data-th="วิธีการ: รูปแบบและสถานที่ศึกษา">Methods: Study design and setting</h3>
+        <pre><button class="copy-btn" onclick="copyPrompt(this)" data-en="Copy" data-th="คัดลอก">Copy</button>Write the "Study design and setting" subsection of Methods,
+~200 words, past tense, formal academic register.
+
+Facts to incorporate:
+- Design: retrospective observational, interrupted time series
+- Setting: single fixed monitoring station, Phayao province,
+  northern Thailand
+- Period: 1 Jan 2023 to 30 Dec 2024 (730 consecutive days)
+- Intervention: hypothetical air-quality policy effective from
+  1 Jan 2024
+- Data source: daily aggregated sensor readings
+- Ethical approval: not required (no human subjects, public
+  environmental data)
+
+Style requirements:
+- No first person
+- Define abbreviations on first use
+- Cite reporting guideline: STROBE for observational studies
+
+End with a single sentence noting the absence of conflicts of
+interest. Do not pad.</pre>
+        <div class="why">
+          <strong data-en="Why it works" data-th="ทำไมมันได้ผล">Why it works</strong>
+          <span data-en="Every fact provided is grounded; 'do not pad' caps verbosity; STROBE reference grounds the writing in a real framework."
+                data-th="ทุกข้อเท็จจริงในนี้มีฐานชัด คำสั่ง 'do not pad' คุมความยืดยาว อ้าง STROBE เพื่อให้ AI โยงกับกรอบมาตรฐานจริง"></span>
+        </div>
+      </div>
+
+      <!-- Methods 2 -->
+      <div class="prompt-block secondary">
+        <div class="prompt-num" data-en="Prompt 05 · Methods (statistics)" data-th="Prompt 05 · วิธีการ (สถิติ)">Prompt 05 · Methods (statistics)</div>
+        <h3 data-en="Methods: Statistical analysis"
+            data-th="วิธีการ: การวิเคราะห์ทางสถิติ">Methods: Statistical analysis</h3>
+        <pre><button class="copy-btn" onclick="copyPrompt(this)" data-en="Copy" data-th="คัดลอก">Copy</button>Write the "Statistical analysis" subsection of Methods, 250-300
+words. Describe the following analyses in the order performed:
+
+1. Descriptive statistics (mean, SD, median, IQR by season and
+   period) — software: R 4.3.0
+2. Pearson correlation matrix with p-values
+3. Welch's two-sample t-test comparing pre- vs post-policy PM2.5
+4. One-way ANOVA across seasons with Tukey HSD post-hoc
+5. Multiple linear regression: PM2.5 ~ temperature + humidity +
+   wind_speed + period
+6. Sensitivity analysis: re-run primary t-test excluding the 12
+   extreme-weather days
+7. Missing data: listwise deletion (n=8 cells, <2% missingness)
+
+For each, specify: the test, the assumptions checked, alpha
+level (0.05, two-sided), and what software function or package
+was used. End with: "All analyses were pre-specified before
+data inspection."
+
+Past tense throughout. Do not justify the choice of tests in
+this paragraph — that belongs in the Discussion.</pre>
+        <div class="why">
+          <strong data-en="Why it works" data-th="ทำไมมันได้ผล">Why it works</strong>
+          <span data-en="Numbered list maps to subsections; 'what belongs where' instruction prevents rationale-bleed into Methods; pre-specification claim is a quality marker."
+                data-th="ลิสต์ที่นับเลขแมปกับหัวข้อย่อยตรง ๆ คำสั่งบอกว่าอะไรอยู่ตรงไหนกันไม่ให้เหตุผลล้นไปอยู่ใน Methods ระบุการ pre-specify ซึ่งเป็นเครื่องหมายคุณภาพ"></span>
+        </div>
+      </div>
+
+      <!-- Results 1 -->
+      <div class="prompt-block tertiary">
+        <div class="prompt-num" data-en="Prompt 06 · Results (primary)" data-th="Prompt 06 · ผลลัพธ์ (หลัก)">Prompt 06 · Results (primary)</div>
+        <h3 data-en="Results: Descriptives and primary finding"
+            data-th="ผลลัพธ์: สถิติพรรณนาและการวิเคราะห์หลัก">Results: Descriptives and primary finding</h3>
+        <pre><button class="copy-btn" onclick="copyPrompt(this)" data-en="Copy" data-th="คัดลอก">Copy</button>Write the first half of the Results section (~400 words),
+covering: (1) descriptive characteristics of the dataset and
+(2) the primary analysis.
+
+Use exactly these values:
+- Total days analyzed: 730
+- Missing data: 8 cells (1.1%); listwise deletion applied
+- Pre-policy mean PM2.5: 36.05 ug/m3 (SD 18.2)
+- Post-policy mean PM2.5: 32.15 ug/m3 (SD 17.4)
+- Mean difference: -3.90 ug/m3 (95% CI: -5.51 to -2.29)
+- Welch's t = -4.74, df = 727.3, p < 0.001
+- Cohen's d = 0.22 (small effect)
+
+Style rules:
+- Report numbers exactly as given; round to one decimal place
+  unless otherwise specified
+- Past tense
+- No interpretation or comparison to other studies
+- Refer to "Table 1" and "Figure 1" (do not create them)
+- Open with a single sentence summarizing the sample
+
+If you need a number I didn't provide, insert [VERIFY: what's
+needed] rather than guessing.</pre>
+        <div class="why">
+          <strong data-en="Why it works" data-th="ทำไมมันได้ผล">Why it works</strong>
+          <span data-en="Explicit, copy-paste numbers eliminate fabrication; firewall against interpretation enforces IMRaD discipline; [VERIFY] placeholders create a gap punch-list."
+                data-th="ให้ตัวเลขแบบ copy-paste พร้อมใช้ — กันการกุข้อมูล กำแพงห้ามตีความบังคับให้แยก Results กับ Discussion [VERIFY] สร้างรายการที่ต้องตรวจสอบเองทีหลัง"></span>
+        </div>
+      </div>
+
+      <!-- Results 2 -->
+      <div class="prompt-block">
+        <div class="prompt-num" data-en="Prompt 07 · Results (secondary)" data-th="Prompt 07 · ผลลัพธ์ (รอง)">Prompt 07 · Results (secondary)</div>
+        <h3 data-en="Results: Secondary analyses"
+            data-th="ผลลัพธ์: การวิเคราะห์รองและ sensitivity">Results: Secondary analyses</h3>
+        <pre><button class="copy-btn" onclick="copyPrompt(this)" data-en="Copy" data-th="คัดลอก">Copy</button>Write the second half of the Results section (~350 words),
+covering secondary and sensitivity analyses, in the same order
+as listed in the Methods.
+
+Use these exact values:
+
+Correlation matrix (Pearson r, all p<0.001 unless noted):
+- humidity vs PM2.5: r = -0.87
+- temperature vs PM2.5: r = +0.69
+- temperature vs humidity: r = -0.59
+- wind_speed vs PM2.5: r = +0.19
+- rainfall vs PM2.5: r = -0.23
+
+ANOVA across seasons (PM2.5): F = 218.4, df = 2/725, p < 0.001
+Tukey HSD: hot vs cool p<0.001, hot vs rainy p<0.001, rainy vs
+cool p<0.001 (all pairs differ)
+
+Linear regression: R-squared = 0.81, RMSE = 7.8 ug/m3
+- humidity coefficient: -0.95 (95% CI -1.04 to -0.86), p<0.001
+- temperature coefficient: +1.21 (95% CI 1.02 to 1.40), p<0.001
+- wind_speed coefficient: +0.42 (95% CI 0.08 to 0.76), p=0.015
+- period (post-policy): -3.42 (95% CI -4.31 to -2.53), p<0.001
+
+Sensitivity analysis (excluding 12 extreme-weather days):
+mean difference -3.71 ug/m3, p<0.001 — result robust
+
+Use Table 2 for the correlation matrix and Table 3 for
+regression output. Keep prose tight: lead each paragraph with
+the finding, then the supporting statistic.</pre>
+        <div class="why">
+          <strong data-en="Why it works" data-th="ทำไมมันได้ผล">Why it works</strong>
+          <span data-en="'Lead with finding, then statistic' is the most useful prose-pattern direction for results writing; pre-loading numbers eliminates fabrication."
+                data-th="'นำด้วยข้อค้นพบ ตามด้วยสถิติ' คือคำสั่งโครงสร้างที่ดีที่สุดสำหรับ Results การให้ตัวเลขมาก่อนเลย กันการกุข้อมูล"></span>
+        </div>
+      </div>
+
+      <!-- Discussion -->
+      <div class="prompt-block secondary">
+        <div class="prompt-num" data-en="Prompt 08 · Discussion" data-th="Prompt 08 · อภิปรายผล">Prompt 08 · Discussion</div>
+        <h3 data-en="Discussion with the 5-part structure"
+            data-th="อภิปรายผลตามโครงสร้าง 5 ส่วน">Discussion with the 5-part structure</h3>
+        <pre><button class="copy-btn" onclick="copyPrompt(this)" data-en="Copy" data-th="คัดลอก">Copy</button>Write the Discussion section (~800 words, 5 paragraphs)
+following this structure exactly:
+
+Paragraph 1 — Principal findings (~120 words): Restate the
+main results in plain language, without statistics.
+
+Paragraph 2 — Comparison with prior work (~200 words): How do
+these findings align with or differ from existing literature?
+Mention the humidity-PM2.5 inverse relationship as consistent
+with established atmospheric chemistry.
+[CITATION needed: Southeast Asia PM2.5 review]
+[CITATION needed: ITS evaluation of air policies]
+
+Paragraph 3 — Mechanisms and interpretation (~200 words): Why
+might the policy have produced this effect? What does the
+humidity dominance in the regression model imply?
+
+Paragraph 4 — Strengths and limitations (~200 words):
+Strengths: daily resolution, 2-year window, pre-specified
+analysis plan, sensitivity analysis robust.
+Limitations: single monitoring site, no co-pollutant data,
+unmeasured confounders (traffic, regional fires), policy effect
+confounded with year 2 secular trends.
+
+Paragraph 5 — Implications and future research (~100 words):
+What should policymakers take from this? What next?
+
+Do not introduce new results. Do not repeat the abstract.
+Use hedged language for causal claims ("our findings are
+consistent with", not "the policy caused").</pre>
+        <div class="why">
+          <strong data-en="Why it works" data-th="ทำไมมันได้ผล">Why it works</strong>
+          <span data-en="5-paragraph structure is publishable-grade; word counts per paragraph prevent front-loading; hedged-language instruction prevents the most common reason discussions get rejected."
+                data-th="โครงสร้าง 5 ย่อหน้าคือมาตรฐานวารสาร กำหนดจำนวนคำต่อย่อหน้ากันการให้น้ำหนักไม่สมดุล คำสั่งใช้ภาษา hedged ป้องกันเหตุที่ Discussion ถูก reject บ่อยที่สุด"></span>
+        </div>
+      </div>
+
+      <!-- Conclusion -->
+      <div class="prompt-block tertiary">
+        <div class="prompt-num" data-en="Prompt 09 · Conclusion" data-th="Prompt 09 · บทสรุป">Prompt 09 · Conclusion</div>
+        <h3 data-en="Conclusion (exactly 3 sentences)"
+            data-th="บทสรุป (3 ประโยคพอดี)">Conclusion (exactly 3 sentences)</h3>
+        <pre><button class="copy-btn" onclick="copyPrompt(this)" data-en="Copy" data-th="คัดลอก">Copy</button>Write a Conclusion section of EXACTLY 3 sentences, no more, no
+less.
+
+Sentence 1: State the principal finding without statistics.
+Sentence 2: State the practical or policy implication.
+Sentence 3: State the single most important next step for
+research.
+
+Do not begin with "In conclusion" or "In summary". Do not
+introduce new findings. Use measured language — avoid "proves",
+"demonstrates conclusively", or "should be implemented".</pre>
+        <div class="why">
+          <strong data-en="Why it works" data-th="ทำไมมันได้ผล">Why it works</strong>
+          <span data-en="Hard length constraints force compression; banning common openers and overclaim verbs removes AI-conclusion tells."
+                data-th="จำกัดความยาวเข้มงวด บังคับให้บีบอัดเนื้อหา ห้ามคำเปิดที่เป็นสำนวน AI ทั่วไปและคำกล่าวเกินจริง — ตัด 'กลิ่น AI' ที่ reviewer สังเกตได้ทันที"></span>
+        </div>
+      </div>
+
+      <!-- Cover letter -->
+      <div class="prompt-block">
+        <div class="prompt-num" data-en="Prompt 10 · Cover letter" data-th="Prompt 10 · จดหมายส่งบรรณาธิการ">Prompt 10 · Cover letter</div>
+        <h3 data-en="Cover letter to editor"
+            data-th="Cover letter ถึงบรรณาธิการ">Cover letter to editor</h3>
+        <pre><button class="copy-btn" onclick="copyPrompt(this)" data-en="Copy" data-th="คัดลอก">Copy</button>You are submitting this manuscript to [TARGET JOURNAL] as
+corresponding author. Draft a cover letter, single page,
+~300 words, with the following structure:
+
+Paragraph 1: Submission statement — manuscript title, type
+(original research), and one-sentence summary of the study.
+
+Paragraph 2: Why this fits the journal — reference 1-2 themes
+from the journal's scope (insert [JOURNAL SCOPE NOTE] as a
+placeholder for me to fill).
+
+Paragraph 3: Significance — the 2 most important contributions
+(rigorous ITS evaluation of a local policy; meteorology-adjusted
+effect estimation).
+
+Paragraph 4: Standard statements — all authors approved the
+submission, no conflicts of interest, data and code available
+on reasonable request, manuscript not under consideration
+elsewhere, no overlap with prior publications.
+
+Close with thanks and the author's name placeholder.
+
+Tone: confident but not boastful. Do not use "we believe" or
+"we hope". Do not list every result.</pre>
+        <div class="why">
+          <strong data-en="Why it works" data-th="ทำไมมันได้ผล">Why it works</strong>
+          <span data-en="Cover letters are formulaic — lock down structure, let the model fill the formula; explicit ban on under-confident hedging."
+                data-th="Cover letter เป็นงานที่มีสูตร — ล็อกโครงสร้างแล้วให้ AI กรอกตามสูตร ห้ามใช้คำที่ดูไม่มั่นใจอย่าง 'we believe'"></span>
+        </div>
+      </div>
+
+      <div class="callout warning">
+        <strong data-en="The meta-prompt to teach last:" data-th="Meta-prompt ที่ควรสอนเป็นอันสุดท้าย:">The meta-prompt to teach last:</strong>
+        <span data-en=" after participants use any of these, ask Claude: "
+              data-th=" หลังจากใช้ prompts ข้างบนสร้างเนื้อหาแล้ว ให้ถาม Claude ต่อว่า "></span>
+        <em>"Now act as Reviewer 2 for [target journal]. Critique the draft you just wrote. Identify the 5 weakest sentences and suggest a stronger rewrite for each."</em>
+      </div>
+    </section>
+
+    <!-- ========== TECHNIQUES ========== -->
+    <section id="techniques">
+      <span class="section-label" data-en="Module 5" data-th="โมดูล 5">Module 5</span>
+      <h2 data-en="The 5 techniques to take home"
+          data-th="5 เทคนิคที่เอากลับไปใช้ได้">The 5 techniques to take home</h2>
+      <p class="lead"
+         data-en="Every prompt in this workshop demonstrates one or more of these recurring patterns. Master these, and participants can apply them to any research-writing task."
+         data-th="ทุก prompt ในเวิร์กชอปนี้สาธิตหนึ่งหรือหลายเทคนิคต่อไปนี้ ถ้าเข้าใจเทคนิคเหล่านี้แล้ว ผู้เข้าร่วมจะเอาไปประยุกต์กับงานเขียนวิจัยอะไรก็ได้"></p>
+
+      <table>
+        <thead>
+          <tr>
+            <th data-en="Technique" data-th="เทคนิค">Technique</th>
+            <th data-en="Where it appears" data-th="เห็นได้จาก">Where it appears</th>
+            <th data-en="Why it works" data-th="ทำไมมันได้ผล">Why it works</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong data-en="Provide every number explicitly" data-th="ให้ตัวเลขทุกอย่างชัด ๆ"></strong></td>
+            <td data-en="Abstract, Results prompts" data-th="Prompt Abstract, Results"></td>
+            <td data-en="Eliminates fabrication. AI cannot invent what you've already given it." data-th="กันการกุข้อมูล — AI กุสิ่งที่คุณให้มาแล้วไม่ได้"></td>
+          </tr>
+          <tr>
+            <td><strong data-en="Specify structure paragraph-by-paragraph" data-th="กำหนดโครงสร้างทีละย่อหน้า"></strong></td>
+            <td data-en="Introduction, Discussion" data-th="Prompt Introduction, Discussion"></td>
+            <td data-en="10× better than 'write me a discussion'; forces argumentative flow." data-th="ดีกว่าสั่งว่า 'เขียน discussion ให้หน่อย' สิบเท่า บังคับให้การโต้แย้งมีระเบียบ"></td>
+          </tr>
+          <tr>
+            <td><strong data-en="Use [CITATION] / [VERIFY] placeholders" data-th="ใช้ [CITATION] / [VERIFY] placeholder"></strong></td>
+            <td data-en="Introduction, Results" data-th="Prompt Introduction, Results"></td>
+            <td data-en="Honest about what AI can't reliably do; creates a punch list." data-th="ซื่อสัตย์ว่า AI ทำอะไรไม่ได้ดี — สร้างรายการที่ต้องตรวจสอบเอง"></td>
+          </tr>
+          <tr>
+            <td><strong data-en="Ban common AI tells" data-th="ห้ามคำหรือสำนวนที่เป็น 'กลิ่น AI'"></strong></td>
+            <td data-en="Conclusion, Cover letter" data-th="Prompt Conclusion, Cover letter"></td>
+            <td data-en="'In conclusion', 'novel', 'we believe' — reviewers spot these instantly." data-th="'In conclusion', 'novel', 'we believe' — reviewer เห็นปุ๊บก็รู้ว่า AI เขียน"></td>
+          </tr>
+          <tr>
+            <td><strong data-en="Assign tense and register per section" data-th="กำหนด tense และระดับภาษาแต่ละส่วน"></strong></td>
+            <td data-en="Methods, Results" data-th="Prompt Methods, Results"></td>
+            <td data-en="Past tense Methods/Results, present tense Intro/Discussion." data-th="Methods/Results ใช้ past tense · Introduction/Discussion ใช้ present tense"></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ========== RESOURCES ========== -->
+    <section id="resources">
+      <span class="section-label" data-en="Reference" data-th="อ้างอิง">Reference</span>
+      <h2 data-en="Resources & further reading"
+          data-th="แหล่งข้อมูลและการอ่านเพิ่มเติม">Resources &amp; further reading</h2>
+
+      <ul class="clean-list">
+        <li>
+          <strong>ICMJE recommendations on AI use</strong> — icmje.org ·
+          <span data-en="authorship and AI disclosure guidance"
+                data-th="แนวทางเรื่องผู้เขียนและการเปิดเผยการใช้ AI"></span>
+        </li>
+        <li>
+          <strong>Nature's policy on generative AI</strong> — nature.com (Editorial policies) ·
+          <span data-en="what counts as AI use"
+                data-th="นิยามว่าอะไรนับเป็นการใช้ AI"></span>
+        </li>
+        <li>
+          <strong>WAME AI recommendations</strong> — wame.org ·
+          <span data-en="journal editor consensus on AI"
+                data-th="ฉันทามติของบรรณาธิการวารสารเรื่อง AI"></span>
+        </li>
+        <li>
+          <strong>STROBE statement</strong> — strobe-statement.org ·
+          <span data-en="reporting guidelines for observational studies"
+                data-th="แนวทางการรายงานการศึกษาเชิงสังเกต"></span>
+        </li>
+        <li>
+          <strong>Cochrane on AI in systematic reviews</strong> — cochrane.org ·
+          <span data-en="evidence synthesis guidance"
+                data-th="คำแนะนำการสังเคราะห์หลักฐาน"></span>
+        </li>
+        <li>
+          <strong>Anthropic prompt engineering guide</strong> — docs.claude.com ·
+          <span data-en="technical patterns"
+                data-th="เทคนิคเชิงเทคนิคของการ prompt"></span>
+        </li>
+      </ul>
+
+      <div class="callout">
+        <strong data-en="Bottom line:" data-th="สรุปสำคัญ:">Bottom line:</strong>
+        <span data-en=" these tools amplify researchers. They do not replace them. Your judgment about what matters, what's true, and what's worth pursuing — those remain yours. AI gives you 10× throughput; only your expertise turns that into 10× better research."
+              data-th=" เครื่องมือเหล่านี้เสริมพลังนักวิจัย ไม่ได้แทนที่นักวิจัย วิจารณญาณว่าอะไรสำคัญ อะไรจริง อะไรน่าศึกษาต่อ — ทั้งหมดยังเป็นของคุณ AI ทำให้ throughput เร็วขึ้น 10 เท่า แต่ความเชี่ยวชาญของคุณคือสิ่งที่เปลี่ยน throughput นั้นให้กลายเป็นงานวิจัยที่ดีขึ้น 10 เท่า"></span>
+      </div>
+    </section>
+
+    <footer>
+      <span data-en="Gen AI Power Tools for Researchers · Workshop Materials · v2.0 (bilingual)"
+            data-th="Gen AI Power Tools สำหรับนักวิจัย · เอกสารประกอบเวิร์กชอป · v2.0 (สองภาษา)"></span>
+    </footer>
+  </main>
+</div>
+
+<script>
+  // Language switching: swap text content of elements based on data-en / data-th attributes.
+  // For elements with HTML content (like h1 with span.accent), we use innerHTML.
+  // Preference persists in localStorage.
+
+  function setLang(lang) {
+    document.documentElement.lang = lang;
+    document.body.classList.remove('lang-en', 'lang-th');
+    document.body.classList.add('lang-' + lang);
+
+    document.querySelectorAll('[data-en]').forEach(el => {
+      const txt = el.getAttribute('data-' + lang);
+      if (txt === null) return;
+      // Use innerHTML if the value contains HTML tags, otherwise textContent for safety.
+      if (txt.includes('<')) el.innerHTML = txt;
+      else el.textContent = txt;
+    });
+
+    // Toggle button active state
+    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+    document.getElementById('btn-th').classList.toggle('active', lang === 'th');
+
+    // Persist
+    try { localStorage.setItem('workshop_lang', lang); } catch(e) {}
+  }
+
+  // Copy-to-clipboard for prompts
+  function copyPrompt(btn) {
+    const pre = btn.parentElement;
+    const text = pre.innerText.replace(btn.innerText, '').trim();
+    navigator.clipboard.writeText(text).then(() => {
+      const original = btn.innerText;
+      const lang = document.body.classList.contains('lang-th') ? 'th' : 'en';
+      btn.innerText = lang === 'th' ? 'คัดลอกแล้ว' : 'Copied';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.innerText = original;
+        btn.classList.remove('copied');
+      }, 1500);
+    });
+  }
+
+  // Active nav highlighting on scroll
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('nav a');
+  function highlightNav() {
+    let current = '';
+    sections.forEach(sec => {
+      const rect = sec.getBoundingClientRect();
+      if (rect.top <= 150 && rect.bottom >= 150) current = sec.id;
+    });
+    navLinks.forEach(link => {
+      link.classList.remove('active');
+      if (link.getAttribute('href') === '#' + current) link.classList.add('active');
+    });
+  }
+  window.addEventListener('scroll', highlightNav);
+
+  // Init: load saved language or default to English
+  (function init() {
+    let savedLang = 'en';
+    try {
+      const s = localStorage.getItem('workshop_lang');
+      if (s === 'th' || s === 'en') savedLang = s;
+    } catch(e) {}
+    setLang(savedLang);
+    highlightNav();
+  })();
+</script>
+
+</body>
+</html>
